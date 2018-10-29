@@ -1,5 +1,6 @@
 <?php
 /* Settings Page */
+/* ver. 1.1 */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -165,13 +166,9 @@ class Developer_Tools_For_Acf_Settings_Page {
 				continue;
 			}
 			add_settings_field( $field['id'], $field['label'], [ $this, 'field_callback' ], $this->plugin_id, $field['section'], $field );
-			if ( method_exists( __CLASS__, 'validate_' . str_replace( $this->prefix, '', $field['id'] ) ) ) {
-				// validation exists
-				register_setting( $this->plugin_id, $field['id'], [ $this, 'validate_' . str_replace( $this->prefix, '', $field['id'] ) ] );
-			} else {
-				// no validation
-				register_setting( $this->plugin_id, $field['id'] );
-			}
+			// if you want a custom sanitization/validation for a certain field, prepare method named 'validate_{$field['id']}'
+			$callback = ( method_exists( $this, 'validate_' . $field['id'] ) ) ? 'validate_' . $field['id'] : 'sanitize';
+			register_setting( $this->plugin_id, $field['id'], [ $this, $callback ] );
 		}
 	}
 
@@ -197,7 +194,7 @@ class Developer_Tools_For_Acf_Settings_Page {
 							$field['id'],
 							$field['type'],
 							$key,
-							( isset( $value[ array_search( $key, $value, true) ] ) ) ? checked( $value[ array_search( $key, $value, true ) ], $key, false ) : '',
+							( isset( $value[ array_search( $key, $value, true ) ] ) ) ? checked( $value[ array_search( $key, $value, true ) ], $key, false ) : '',
 							$label,
 							$iterator
 						);
@@ -220,7 +217,15 @@ class Developer_Tools_For_Acf_Settings_Page {
 		}
 	}
 
-	public function validate_capability( $input ) {
+	public function sanitize( $input ) {
+		if ( is_string( $input ) ) {
+			$input = esc_html( trim( $input ) );
+		}
+		return $input;
+	}
+
+	public function validate_dtfa_capability( $input ) {
+		$input = esc_html( trim( $input ) );
 		// multibyte character included?
 		if( strlen( $input ) !== mb_strlen( $input, 'utf8' ) ) {
 			add_settings_error(

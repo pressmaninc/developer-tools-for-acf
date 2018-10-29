@@ -3,7 +3,7 @@
 Plugin Name: Developer Tools For ACF
 Plugin URI:
 Description: Provide developer tools for ACF
-Version: 1.0
+Version: 1.0.1
 Author: PRESSMAN
 Author URI: https://www.pressman.ne.jp/
 License: GPLv2 or later
@@ -23,9 +23,9 @@ class Developer_Tools_For_Acf{
 	function __construct() {
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) { return; }
 		// Add a display of ACF field details in ACF form
-		add_action( 'admin_enqueue_scripts', [ $this, 'load_js_and_css_for_field_group' ] );
 		add_action( 'acf/render_fields', [ $this, 'load_js_and_css_for_form' ], 10, 2 );
 		// Add columns in ACF field group screen.
+		add_action( 'admin_enqueue_scripts', [ $this, 'load_js_and_css_for_field_group' ] );
 		add_filter( 'manage_edit-acf-field-group_columns', [ $this, 'manage_field_group_columns' ], 100 );
 		add_action( 'manage_acf-field-group_posts_custom_column', [ $this, 'manage_field_group_custom_column' ], 100 );
 	}

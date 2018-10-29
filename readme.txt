@@ -1,5 +1,5 @@
 === Developer Tools For ACF ===
-Contributors: pressmaninc, hiroshisekiguchi
+Contributors: pressmaninc, hiroshisekiguchi, kazunao
 Tags: acf, advanced, custom, field, fields, debug, develop, developer, tool
 Requires at least: 4.9.8
 Tested up to: 4.9.8
