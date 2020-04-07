@@ -23,6 +23,9 @@ For details, see this plugin's setting page.
 2. Activate the plugin through the Plugins menu in WordPress.
 
 == Changelog ==
+= 1.0.2 =
+- a bug fix in JavaScript.
+
 = 1.0 =
 - first commmit.
 
